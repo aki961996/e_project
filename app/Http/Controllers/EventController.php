@@ -66,7 +66,7 @@ class EventController extends Controller
             $event->tags()->attach($request->tags);
 
              // Send email to logged-in user
-        Mail::to(auth()->user()->email)->send(new EventCreated($event));
+        // Mail::to(auth()->user()->email)->send(new EventCreated($event));
             return to_route('events.index');
         } else {
             return back();
