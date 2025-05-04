@@ -69,4 +69,38 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attending::class);
     }
+
+    public function eventsCreated()
+    {
+        return $this->hasMany(Event::class, 'created_by');
+    }
+
+    public function invitations()
+    {
+        return $this->belongsToMany(Event::class, 'event_user')
+            ->withPivot('status') // pending, accepted, rejected
+            ->withTimestamps();
+    }
+
+    // public function invitedEvents(): BelongsToMany
+    // {
+    //     return $this->belongsToMany(Event::class, 'event_user')
+    //         ->withPivot('status')
+    //         ->withTimestamps();
+    // }
+   
+public function invitedEvents()
+{
+    return $this->belongsToMany(Event::class, 'event_user')  
+                ->withPivot('status')  
+                ->withTimestamps();
+}
+
+public function acceptedEvents()
+{
+    return $this->belongsToMany(Event::class)->withPivot('status');
+}
+
+
+
 }

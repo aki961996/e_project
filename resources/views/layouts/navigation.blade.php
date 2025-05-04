@@ -18,6 +18,15 @@
                     <x-nav-link :href="route('events.index')" :active="request()->routeIs('events.index')">
                         {{ __('Events') }}
                     </x-nav-link>
+
+                    @isset($event)
+                    <x-nav-link :href="route('requisition.index', ['event' => $event->id])" :active="request()->routeIs('requisition.index')">
+                        {{ __('Requisitions') }}
+                    </x-nav-link>
+                    @endisset
+                  
+
+
                     <x-nav-link :href="route('galleries.index')" :active="request()->routeIs('galleries.index')">
                         {{ __('Gallery') }}
                     </x-nav-link>
@@ -30,6 +39,8 @@
                     <x-nav-link :href="route('attendingEvents')" :active="request()->routeIs('attendingEvents')">
                         {{ __('Attending Events') }}
                     </x-nav-link>
+
+
                 </div>
             </div>
 

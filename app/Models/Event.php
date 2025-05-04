@@ -27,10 +27,15 @@ class Event extends Model
         'num_tickets'
     ];
 
+    // protected $casts = [
+    //     'start_date' => 'date:m/d/Y',
+    //     'end_date' => 'date:m/d/Y',
+    // ];
     protected $casts = [
-        'start_date' => 'date:m/d/Y',
-        'end_date' => 'date:m/d/Y',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
+
 
     public function user(): BelongsTo
     {
@@ -75,4 +80,34 @@ class Event extends Model
     {
         return $this->tags->contains($tag);
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function eventFor()
+    {
+        return $this->belongsTo(User::class, 'event_for');
+    }
+
+    public function invitedUsers()
+    {
+        return $this->belongsToMany(User::class, 'event_user')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
+
+    public function requisitionItems() {
+        return $this->hasMany(RequisitionItem::class);
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'event_user')
+            ->wherePivot('status', 'accepted');
+    }
+
+
+
 }

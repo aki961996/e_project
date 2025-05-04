@@ -17,6 +17,8 @@ use App\Http\Controllers\SavedEventSystemController;
 use App\Http\Controllers\StoreCommentController;
 use App\Http\Controllers\TestEventController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\RequisitionItemController;
 use App\Models\Country;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +33,7 @@ Route::get('/gallery', GalleryIndexController::class)->name('galleryIndex');
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
- Route::get('/dashboard' , [DashboardController::class ,'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -57,9 +59,24 @@ Route::middleware('auth')->group(function () {
     Route::post('/events/{id}/comments', StoreCommentController::class)->name('events.comments');
     Route::delete('/events/{id}/comments/{comment}', DeleteCommentController::class)->name('events.comments.destroy');
     Route::get('/countries/{country}', function (Country $country) {
-      
+
         return response()->json($country->cities);
     });
+
+    Route::get('/events/{event}/invite', [InvitationController::class, 'showForm'])->name('invitations.form');
+    Route::post('/events/{event}/invite', [InvitationController::class, 'send'])->name('invitations.send');
+
+
+    Route::get('/invitations/{event}', [InvitationController::class, 'viewInvitation'])->name('invitations.view');
+    Route::post('/events/{event}/respond/{status}', [InvitationController::class, 'respond'])->name('invitations.respond');
+
+    
+    // Route::get('/requisitions', [RequisitionItemController::class, 'index'])->name('requisitions.index');
+    Route::get('/events/{event}/requisition', [RequisitionItemController::class, 'index'])->name('requisition.index');
+    Route::post('/events/{event}/requisition', [RequisitionItemController::class, 'store'])->name('requisition.store');
+    Route::post('/requisition/{item}/claim', [RequisitionItemController::class, 'claim'])->name('requisition.claim');
+    
+
 });
 
 require __DIR__ . '/auth.php';

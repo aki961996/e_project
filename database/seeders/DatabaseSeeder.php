@@ -43,4 +43,6 @@ class DatabaseSeeder extends Seeder
         Tag::create(['name' => 'Vue JS', 'slug' => 'vue-js']);
         Tag::create(['name' => 'Livewire', 'slug' => 'livewire']);
     }
+
+    
 }
